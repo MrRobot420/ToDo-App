@@ -1,11 +1,13 @@
 var fs = require('fs');
-var todos = fs.readFileSync('/Users/Maxi/Desktop/atom/javaScript/react/todo_app/src/data/todos.json');
+var todo_url = '/Users/Maxi/Desktop/atom/js/react/todo_app/src/data/todos.json';
+var todos = fs.readFileSync(todo_url);
 var express = require('express');
 var http = require('http');
 var https = require('https');
+var bodyParser = require('body-parser');
 var privateKey  = fs.readFileSync('./sslcert/private.key', 'utf8');
 var certificate = fs.readFileSync('./sslcert/server.crt', 'utf8');
-
+ 
 const cors = require("cors");
 
 // Origins to trust:
@@ -33,11 +35,15 @@ var credentials = {key: privateKey, cert: certificate};
 var app = express();
 // your express configuration here
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
 
 app.set('view engine', 'ejs');
 
 app.get('/todos/todos.json', cors(corsOptionsDelegate), (req, res, next) => {
-    res.sendFile('/Users/Maxi/Desktop/atom/javaScript/react/tutorial_app/src/data/todos.json');
+    res.sendFile(todo_url);
     console.log("New GET request: todos.json");
 });
 
@@ -48,9 +54,9 @@ app.post('/todos', cors(corsOptionsDelegate), (req, res) => {
     if (!task_id) {
         return res.status(400).send({error: true, message: 'Please provide task_id'});
     }
-    var data = todos;
+    var data = JSON.parse(todos);
     console.log(data); 
-    console.log("New POST request: bLANk")
+    console.log("New POST request: bLANk");
     return res.sendFile(data);
 })
 

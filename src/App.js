@@ -4,7 +4,7 @@ import './App.css';
 
 class App extends Component {
   state = {
-    todos: [],
+    todos: [{}],
     isLoaded: false,
   }
 
@@ -18,26 +18,30 @@ class App extends Component {
   }
 
   toggleComplete = (id) => {
-    console.log("User clicked on ToDo with ID: " + id)
     this.setState({ todos: this.state.todos.map(todo => {
       if (todo.id === id) {
         todo.completed = !todo.completed;
+        if (todo.completed) {
+          console.log("User did finish ToDo with ID: " + id + " | Named: " + todo.title);
+        } else {
+          console.log("User deselected ToDo with ID: " + id + " | Named: " + todo.title);
+        }
       }
       return todo;
     })})
   }
 
-  handlePost = (id, comp_state) => {
+  handlePost = (todo) => {
     fetch('http://localhost:5000/todos', {
       method: 'POST',
       body: {
-        task_id: id
+        task_id: JSON.stringify(todo.id)
       },
-      todos: [
-        this.state.todos
+      todo: [
+        JSON.stringify(todo)
       ],
-      id: id,
-      completed: comp_state,
+      id: JSON.stringify(todo.id),
+      completed: JSON.stringify(todo.completed),
       headers: {"Content-Type": "application/json"}
     })
     .then((res) => {
@@ -50,19 +54,34 @@ class App extends Component {
   }
 
   deleteItem = (id) => {
+    var todos_arr = [{}];
+    var todo_delete = {};
+    var index = 0;
     console.log("User deleted ToDo with ID: " + id);
     // this.setState({todos: [this.state.todos.filter(todo => todo.id !== id)] });
     this.setState({todos: this.state.todos.map(todo => {
+      index++;
       if (todo.id === id) {
         // var index = this.state.todos.indexOf(id);
-        this.state.todos.splice(todo.id, 1);
+        // this.state.todos.splice(todo.id, 1);           // The standard way of removing things from arrays
         // delete this.state.todos[id-1];
-        console.log(todo.title + " has been deleted...");
-        console.log(this.state.todos);
-        this.handlePost(id-1, this.state.completed);
+        console.log("FOUND item which is to delete!");
+        todo_delete.id = todo.id;
+        todo_delete.title = todo.title;
+        todo_delete.completed = todo.completed;
+      } else {
+        todos_arr.push(todo);
+        // todos_arr.push(todo.title);
+        // todos_arr.push(todo.completed);
       }
-      return todo;
+      
+      return todos_arr;
     })})
+    this.render();
+    this.handlePost(todo_delete);
+    console.log(todo_delete.title + "with ID: " + todo_delete.id + " has been deleted...");
+    console.log("TODOS LEFT: ");
+    console.log(todos_arr);
   }
 
   // Runs after the render method!
