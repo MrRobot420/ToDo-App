@@ -1,0 +1,30 @@
+{
+    "todos": [
+        {
+          "id": 1,
+          "title": "Learn about react!",
+          "completed": false
+        },
+        {
+          "id": 2,
+          "title": "Create input field for entering text!",
+          "completed": false
+        },
+        {
+          "id": 3,
+          "title": "Create button for saving new todos!",
+          "completed": false
+        },
+        {
+          "id": 4,
+          "title": "Save new objects to JSON!",
+          "completed": false
+        },
+        {
+          "id": 5,
+          "title": "Delete objects from JSON!",
+          "completed": false
+        }
+    ]    
+}
+
