@@ -4,7 +4,7 @@ import './App.css';
 
 class App extends Component {
   state = {
-    todos: [{}],
+    todos: [{id: "1"}],
     isLoaded: false,
   }
 
@@ -14,6 +14,34 @@ class App extends Component {
       display: 'flex',
       justifyContent: 'center',
       background: '#f4f4f4'
+    }
+  }
+
+  getInputStyle = () => {
+    return {
+      width: window.innerWidth / 1.5,
+      height: '40px',
+      display: 'flex',
+      background: '#f4f4f4',
+      textAlign: 'center',
+      color: '#00AAFF',
+      fontSize: '30px',
+      margin: '0 auto'
+    }
+  }
+
+  getButtonStyle = () => {
+    return {
+      marginTop: '100px',
+      width: window.innerWidth / 10,
+      height: '35px',
+      display: 'flex',
+      justifyContent: 'center',
+      background: '#f4f4f4',
+      textAlign: 'center',
+      color: '#00AAFF',
+      fontSize: '25px',
+      margin: '0 auto'
     }
   }
 
@@ -99,7 +127,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1 style={this.getHeaderStyle()}>To Dos:</h1><br></br>
+        <h1 style={this.getHeaderStyle()}>To Dos:</h1><br/>
+        <input style={this.getInputStyle()} placeholder="Enter new ToDo here..."/><br/>
+        <button style={this.getButtonStyle()}>Add</button><br/>
         <Todos todos={this.state.todos} toggleComplete={this.toggleComplete} deleteItem={this.deleteItem}/>
       </div>
     );
