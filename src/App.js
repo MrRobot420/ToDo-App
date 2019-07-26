@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Todos from './components/Todos';
 import InputField from './components/InputField';
 import './App.css';
-var mock_object = {id: "1", title: "I am just here for testing!"};
 
 class App extends Component {
   state = {
@@ -56,73 +55,34 @@ class App extends Component {
     });
   }
 
-  addItem = () => {
-    console.log("was clicked!");
+  addItem = (title) => {
+    console.log("User clicked on ADD button!");
+    console.log("User wants to add new todo with title: " + title);
   }
 
   deleteItem = (id) => {
-    var todos_arr = {};
-    
-    var index = 0;
-    console.log("User deleted ToDo with ID: " + id);
-    // this.setState({todos: [this.state.todos.filter(todo => todo.id !== id)] });
-
-    this.setState({ todos: this.state.todos.map(todo => {
-      if (todo.id === id) {
-        // this.state.todos.splice(todo.id, 1);           // The standard way of removing things from arrays
-        // delete this.state.todos[id-1];
-        console.log("FOUND item which is to delete!");
-        // this.state.todos.splice(todo.id-1, 1);
-        this.todo_delete[0] = todo;
-      } else {
-        // todos_arr.push(todo);
-        todos_arr[index] = todo
-        index++;
-        return todo;
-        // todos_arr.push(todo.title);
-        // todos_arr.push(todo.completed);
-      }
-      return null;
-    })});
-
-    this.render();
-    this.handlePost(this.todo_delete);
-    console.log(this.todo_delete.title + "with ID: " + this.todo_delete.id + " has been deleted...");
-    console.log("TODOS LEFT: ");
-    console.log(todos_arr);
-  }
-
-  deleteItem2= (id) => {
     var todos_arr = [];
     
     var index = 0;
     console.log("User deleted ToDo with ID: " + id);
-    // this.setState({todos: [this.state.todos.filter(todo => todo.id !== id)] });
 
-
-    var something = this.state.todos.map(todo => {
+    var something = () => {this.state.todos.map(todo => {
       if (todo.id === id) {
-        // this.state.todos.splice(todo.id, 1);           // The standard way of removing things from arrays
-        // delete this.state.todos[id-1];
         console.log("FOUND item which is to delete!");
-        // this.state.todos.splice(todo.id-1, 1);
         this.todo_delete[0] = todo;
       } else {
-        // todos_arr.push(todo);
         todos_arr[index] = todo
         index++;
-        // todos_arr.push(todo.title);
-        // todos_arr.push(todo.completed);
       }
-    });
-    console.log("SOMETHING:");
-    console.log(something);
+      return todo;
+    })};
+    something();    // Call something() in order to fill todos_arr.
 
     var reduced_todos = {todos: todos_arr};
     console.log(reduced_todos);
     this.setState(reduced_todos);
 
-    this.render();
+    // this.render();
     this.handlePost(this.todo_delete);
     console.log(this.todo_delete.title + "with ID: " + this.todo_delete.id + " has been deleted...");
     console.log("TODOS LEFT: ");
@@ -147,8 +107,8 @@ class App extends Component {
     return (
       <div className="App">
         <h1 style={this.getHeaderStyle()}>TO DO</h1><br/>
-        <InputField></InputField>
-        <Todos todos={this.state.todos} toggleComplete={this.toggleComplete} deleteItem={this.deleteItem2}/>
+        <InputField addItem={this.addItem}></InputField>
+        <Todos todos={this.state.todos} toggleComplete={this.toggleComplete} deleteItem={this.deleteItem}/>
       </div>
     );
   }

@@ -3,6 +3,24 @@ import PropTypes from 'prop-types';
 
 export class InputField extends Component {
 
+    constructor(props) {
+        super(props);
+        this.text_ref = React.createRef();
+        // this.onSubmit = this.onSubmit.bind(this.text_ref);
+    }
+
+    onSubmit(event) { 
+        const title = event.target.value; 
+        return title;
+    }
+
+    // onSubmit(e) {
+    //     e.preventDefault();
+    //     var title = this.title;
+    //     // this.props.addItem.bind(title)
+    //     console.log(title);
+    // }
+
     // Checks and returns the style of a todo object
     getInputStyle = () => {
         return {
@@ -37,34 +55,28 @@ export class InputField extends Component {
     }
 
     render() {
-        // const { id, title } = this.props.todo;
+        // var { title } = window.getElementById("textfield").value;
+        var title = this.text_ref.current;
+        // var title = this.onSubmit();
+        // console.log(title);
+
         return (
             <div>
                 <p> 
                     {/*             this.props 'climbs' up to Todos! */}
-                    <input style={this.getInputStyle()} placeholder="Enter new TODO here..."/><br/>
+                    {/* <input refs={this.text_ref} style={this.getInputStyle()} placeholder="Add TODO here..."/><br/> */}
+                    <input refs={this.text_ref} style={this.getInputStyle()} placeholder="Add TODO here..."/><br/>
                     {' '}
-                    <button style={this.getButtonStyle()} onClick={ this.props.addItem }> Add </button><br/>
+                    <button style={this.getButtonStyle()} onClick={ this.props.addItem.bind(this, title) }> Add </button><br/>
                 </p>
             </div>
         )
     }
 }
 
-
 // PropTypes (Good Practise!)
 InputField.propTypes = {
-    addItem: PropTypes.object.isRequired
+    addItem: PropTypes.func.isRequired
 }
-
-// const btnStyle = {
-//     background: '#ff0000',
-//     color: '#fff',
-//     border: 'none',
-//     padding: '5px 9px',
-//     borderRadius: '50%',
-//     cursor: 'pointer',
-//     float: 'right'
-// }
 
 export default InputField;
